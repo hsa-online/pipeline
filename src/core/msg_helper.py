@@ -67,7 +67,6 @@ class MessageHelper:
 
     @staticmethod
     def api_response_predict(result: Dict[str, Any]) -> str:
-        print(f'>>>>>>>>>>>{result}')
         resp = {}
         resp['status'] = result['status']
         resp['message'] = result['message']
