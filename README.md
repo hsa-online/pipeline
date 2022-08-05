@@ -9,7 +9,7 @@ Current alpha simulates the inference by computing sums of vectors passed.
 
 ## Requirements
 
-Python 3.9+ (with pynng + trio + starlette + hypercorn)
+Python 3.9+ (with pynng + trio + starlette + hypercorn + netifaces)
 
 ## How to use
 

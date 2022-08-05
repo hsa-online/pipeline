@@ -39,9 +39,11 @@ async def bootstrap():
 
     with pynng.Respondent0(dial=args.addr_service) as sock_responder, \
            pynng.Rep0(dial=args.addr_worker, reconnect_time_min=1000, reconnect_time_max=5000) as sock_rep:
-        print("[Connecting...]")
+        # TODO: Remove debug output
+        print('[Connecting...]')
         await trio.sleep(0.5)
-        print("[Possibly Connected]")
+        # TODO: Remove debug output
+        print('[Possibly Connected]')
         async with trio.open_nursery() as nursery:
             nursery.start_soon(task_work_predict, sock_rep)
             nursery.start_soon(task_work_service, sock_responder)
@@ -50,7 +52,7 @@ def main():
     try:
         trio.run(bootstrap, restrict_keyboard_interrupt_to_checkpoints=True)
     except KeyboardInterrupt:
-        print("Exiting...")
+        print('Exiting...')
 
 if __name__ == '__main__':
     main()

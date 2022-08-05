@@ -101,7 +101,7 @@ def main():
     try:
         trio.run(bootstrap, restrict_keyboard_interrupt_to_checkpoints=True)
     except KeyboardInterrupt:
-        print("Exiting...")
+        print('Exiting...')
 
 if __name__ == '__main__':
     main()
