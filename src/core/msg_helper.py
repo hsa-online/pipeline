@@ -1,6 +1,6 @@
 import json
 
-from typing import Any, Dict
+from typing import Any, List, Dict
 
 from core.cls_property import classproperty
 from core.cmd import Command
@@ -13,13 +13,23 @@ class MessageHelper:
         return json.dumps(cmd)
 
     @staticmethod
-    def cmd_response_status(addr) -> str:
+    def cmd_response_status(
+        addr: str, 
+        nn_id: str, 
+        req_handling_time_ms: float, 
+        count_values_handled: int, 
+        inference_time_ms: float) -> str:
+
         cmd_resp = {}
         cmd_resp['address'] = addr
+        cmd_resp['nn_id'] = nn_id
+        cmd_resp['req_handling_time_avg_ms'] = req_handling_time_ms
+        cmd_resp['count_values_handled'] = count_values_handled
+        cmd_resp['inference_time_avg_ms'] = inference_time_ms
         return json.dumps(cmd_resp)
 
     @staticmethod
-    def cmd_set_weights(nn_id, data) -> str:
+    def cmd_set_weights(nn_id: str, data: str) -> str:
         cmd = {}
         cmd['cmd'] = Command.SET_WEIGHTS
         cmd['nn_id'] = nn_id
@@ -27,9 +37,11 @@ class MessageHelper:
         return json.dumps(cmd)
 
     @staticmethod
-    def cmd_response_set_weights(res) -> str:
+    def cmd_response_set_weights(res_status: bool, res_trace_str: str) -> str:
         cmd_resp = {}
-        cmd_resp['result'] = res
+        cmd_resp['result'] = res_status
+        if not res_status and res_trace_str != "": 
+            cmd_resp['trace'] = res_trace_str
         return json.dumps(cmd_resp)
 
     @staticmethod
@@ -48,19 +60,31 @@ class MessageHelper:
         return json.dumps(resp)
 
     @staticmethod
-    def api_response_status(results) -> str:
+    def api_response_status(
+        queue_requests_current: int,
+        queue_requests_max: int, 
+        req_handling_time_avg_ms: float, 
+        results: List[Any]) -> str:
+
         resp = {}
         resp['status'] = True
         resp['message'] = 'OK'
+        resp['queue_requests_current'] = queue_requests_current
+        resp['queue_requests_max'] = queue_requests_max
+        resp['req_handling_time_avg_ms'] = req_handling_time_avg_ms
         resp['workers_count'] = len(results)
         resp['workers'] = results
         return json.dumps(resp)
 
     @staticmethod
-    def api_response_set_weights(results) -> str:
+    def api_response_set_weights(overall_result: bool, results: List[Any]) -> str:
         resp = {}
-        resp['status'] = True
-        resp['message'] = 'OK'
+        if overall_result:
+          resp['status'] = True
+          resp['message'] = 'OK'
+        else:
+          resp['status'] = False
+          resp['message'] = 'One or more workers were failed with weights loading'
         resp['workers_count'] = len(results)
         resp['workers'] = results
         return json.dumps(resp)

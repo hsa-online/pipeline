@@ -20,6 +20,7 @@ from starlette.responses import JSONResponse
 from starlette.routing import Route
 
 from core.api import APIGateway
+from core.app_stats import ApplicationStatistics
 from core.defaults import Defaults
 from core.help import HelpStrings
 from core.msg_helper import MessageHelper
@@ -65,6 +66,8 @@ async def bootstrap():
     chan_compute_send_cluster2api, chan_compute_receive_cluster2api = trio.open_memory_channel(
         max_buffer_size=Defaults.GW_SIZE_QUEUE_COMPUTE)
 
+    ApplicationStatistics.setup_for_gw()
+
     with pynng.Surveyor0(listen=args.addr_service) as sock_surveyor, \
         pynng.Req0(listen=args.addr_worker) as sock_req:
  
@@ -91,7 +94,7 @@ async def bootstrap():
                     chan_compute_send_cluster2api, chan_compute_receive_api2cluster, sock_req)
 
                 nursery.start_soon(task_gw_service, 
-                    chan_service_send_cluster2api, chan_service_receive_api2cluster, sock_surveyor)
+                    chan_service_send_cluster2api, chan_service_receive_api2cluster, chan_compute_send_api2cluster, sock_surveyor)
 
                 nursery.start_soon(serve, APIGateway(
                     chan_service_send_api2cluster, chan_service_receive_cluster2api,

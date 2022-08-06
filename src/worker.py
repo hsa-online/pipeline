@@ -13,6 +13,7 @@ import argparse
 import pynng
 import trio
 
+from core.app_stats import ApplicationStatistics
 from core.defaults import Defaults
 from core.help import HelpStrings
 from core.tasks import task_work_service, task_work_predict
@@ -37,8 +38,10 @@ async def bootstrap():
         help=HelpStrings.help)
     args = p.parse_args()
 
+    ApplicationStatistics.setup_for_work()
+
     with pynng.Respondent0(dial=args.addr_service) as sock_responder, \
-           pynng.Rep0(dial=args.addr_worker, reconnect_time_min=1000, reconnect_time_max=5000) as sock_rep:
+            pynng.Rep0(dial=args.addr_worker, reconnect_time_min=1000, reconnect_time_max=5000) as sock_rep:
         # TODO: Remove debug output
         print('[Connecting...]')
         await trio.sleep(0.5)

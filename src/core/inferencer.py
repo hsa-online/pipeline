@@ -3,12 +3,15 @@ NN inferencer
 
 """
 
+import base64
 import io
 import numpy as np
 import torch
+import traceback
 
-from typing import List
+
 from torch.autograd import Variable
+from typing import Any, List, Tuple
 
 from core.model import Model
 from core.singleton import Singleton
@@ -20,38 +23,40 @@ class Inferencer(metaclass=Singleton):
 
         self.__nn_id = ""
 
-        # TODO: Remove debug output
-        print('Inferencer created')
-
     @property
-    def ready(self) -> str:
+    def ready(self) -> bool:
         return self.__nn_id != ""
 
-    def load_weights(self, nn_id, data) -> bool:
+    @property
+    def nn_id(self) -> str:
+        return self.__nn_id
+
+    def load_weights(self, nn_id: str, data: Any) -> Tuple[bool, str]:
         """
-        Loads NN weights
+        Loads NN weights. Also updates the NN identifier.
         """
 
         buffer = io.BytesIO(data)
+        
+        try:
+            self.__nn_model.load_state_dict(torch.load(buffer))
+        except RuntimeError:
+            trace_str = traceback.format_exc()
+            return (False, trace_str)
 
-        self.__nn_model.load_state_dict(torch.load(buffer))
         self.__nn_model.eval()
         
         self.__nn_id = nn_id
 
-        return True
+        return (True, "")
 
-    def predict(self, v: List) -> List:
+    def predict(self, v: List) -> Tuple[bool, str, float]:
         """
         Runs the NN to predict sum of the input vector's v components.
         """
-        if not self.ready:
-            res = []
-            res.append(False)
-            res.append('No weights loaded')
-            res.append(0.0)
 
-            return res
+        if not self.ready:
+            return (False, 'No weights loaded', 0.0)
 
         x = torch.unsqueeze(torch.from_numpy(np.asarray(v)), 0)
         ds = torch.utils.data.TensorDataset(x)
@@ -61,15 +66,19 @@ class Inferencer(metaclass=Singleton):
             for inference in inference_loader:
                 inference_batch = Variable(inference[0]).float()
 
-                # Compute model output
-                output_batch = self.__nn_model(inference_batch)
+                try:
+                    # Compute model output
+                    output_batch = self.__nn_model(inference_batch)
+                except RuntimeError:
+                    trace_str = traceback.format_exc()
+                    trace_str = base64.standard_b64encode(
+                        trace_str.encode()).decode('utf-8')
+
+                    return (False, trace_str, 0.0)
 
                 predicted_by_nn = torch.squeeze(output_batch).numpy().astype(float)
-                total = predicted_by_nn.tolist()
 
-                res = []
-                res.append(True)
-                res.append(self.__nn_id)
-                res.append(total)
+                # Note: float is returned as the array consists of a single item only 
+                total = predicted_by_nn.tolist() 
 
-                return res
+                return (True, self.__nn_id, total)

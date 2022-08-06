@@ -6,7 +6,6 @@
 #     https://stackoverflow.com/questions/128573/using-property-on-classmethods/64738850#64738850
 
 class ClassPropertyDescriptor(object):
-
     def __init__(self, fget, fset=None):
         self.fget = fget
         self.fset = fset

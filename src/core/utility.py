@@ -1,7 +1,11 @@
 from netifaces import interfaces, ifaddresses, AF_INET
+from typing import List
 
-def get_local_ips():
-    """ Assumes the host has an external IP"""   
+def get_local_ips() -> List:
+    """ 
+    Assumes the host has an external IP
+    """
+
     result = []
     for ifaceName in interfaces():    
         addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':'No IP addr'}] )]
