@@ -60,7 +60,7 @@ Get the status of the service:
 curl -X GET http://127.0.0.1:54321/status
 ```
 
-Several shell scripts are provided to simplify the testing. See <a name='shell-scripts'>Shell scripts</a>.
+Several shell scripts are provided to simplify the testing. See [Shell scripts](#shell-scripts).
 
 ## System responses
 
@@ -215,7 +215,7 @@ Four different sample weights are provided (actually one example contains incorr
 | `dfd2cd54a1ec4a408285f547f6827ea2_098b6e80.b64` | Weights of the NN trained for 20 epochs with batch size 5 |
 | `bad_tensors.b64` | Bad data encoded to Base64 to check service's reaction. |
 
-### [Shell scripts](#shell-scripts)
+### Shell scripts
 
 Provided shell scripts allow to test the system from the command line using cURL utility:
 
