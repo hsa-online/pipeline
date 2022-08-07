@@ -77,6 +77,7 @@ async def bootstrap():
     with pynng.Surveyor0(listen=args.addr_service) as sock_surveyor, \
         pynng.Req0(listen=args.addr_worker) as sock_req:
  
+        # TODO: Can be used to allow Gateway to remember connected Workers.
         """
         def pre_connect_cb(pipe):
             addr = str(pipe.remote_address)

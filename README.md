@@ -115,7 +115,7 @@ When the weights are incorrect, system responds with this answer:
 }
 ```
 
-Please note that in the example above the `message` field is partially cut.
+Please note that in the example above the `trace` field is partially cut.
 
 | Field | Description |
 | --- | --- |
@@ -179,7 +179,7 @@ Contains an overall status of the system and all its Workers.
       "address":                  ["192.168.1.133"],
       "nn_id":                    "0d3c5dffa4374c77a554ed38c9c50296",
       "req_handling_time_avg_ms": 11.356,
-      "count_requests_handled":     1,
+      "count_requests_handled":   1,
       "inference_time_avg_ms":    11.196
     }
   ]
