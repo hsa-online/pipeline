@@ -60,6 +60,8 @@ Get the status of the service:
 curl -X GET http://127.0.0.1:54321/status
 ```
 
+Several shell scripts are provided to simplify the testing. See <a id='shell-scripts'>Shell scripts</a>.
+
 ## System responses
 
 The system responds to REST calls with JSONs. 
@@ -96,6 +98,33 @@ If new weights were successfully loaded:
 | `workers_count` | Number of Workers which actually loaded the new weights. |
 | `workers` | An array of workers. Each object from this array contains a data from single Worker. |
 | `workers[i].result` | This Worker's weights loading result. |
+
+When the weights are incorrect, system responds with this answer:
+
+```yaml
+{
+  "status":        false,
+  "message":       "One or more workers were failed with weights loading",
+  "workers_count": 1,
+  "workers": [
+    {
+      "result": false,
+      "trace":  "VHJhY2ViYWNrICh ... cmVkaWN0LnNoCg=="
+    }
+  ]
+}
+```
+
+Please note that in the example above the `message` field is partially cut.
+
+| Field | Description |
+| --- | --- |
+| `status` | Response status: `false`. |
+| `message` | Response message: error description. |
+| `workers_count` | Number of Workers which actually responded to the call. |
+| `workers` | An array of workers. Each object from this array contains a data from single Worker. |
+| `workers[i].result` | This Worker's weights loading result. |
+| `workers[i].trace` | When the `result` is `false`, contains a Base64 encoded stack trace of the Worker. |
 
 ### Prediction results (response to the `/predict` call):
 
@@ -174,6 +203,8 @@ Contains an overall status of the system and all its Workers.
 
 ## Supplementary files 
 
+### Weights
+
 Weights of the Neural Network can be uploaded to the service from the Gateway. 
 Four different sample weights are provided (actually one example contains incorrect data encoded to Base64):
 
@@ -183,6 +214,8 @@ Four different sample weights are provided (actually one example contains incorr
 | `0d3c5dffa4374c77a554ed38c9c50296_66e26224.b64` | Weights of the NN trained for 20 epochs with batch size 2 | 
 | `dfd2cd54a1ec4a408285f547f6827ea2_098b6e80.b64` | Weights of the NN trained for 20 epochs with batch size 5 |
 | `bad_tensors.b64` | Bad data encoded to Base64 to check service's reaction. |
+
+### [Shell scripts](#shell-scripts)
 
 Provided shell scripts allow to test the system from the command line using cURL utility:
 
