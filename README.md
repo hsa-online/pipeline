@@ -60,6 +60,54 @@ Get the status of the service:
 curl -X GET http://127.0.0.1:54321/status
 ```
 
+## System responses
+
+The system responds to REST calls with JSONs. 
+All responses have the `status` and `message` fields. 
+The `status` contains a `boolean` value. 
+It is required as "partially handled" requests are not responded with HTTP errors codes. 
+The `message` contains a `string` value and describes the response.
+
+More about these responses below:
+
+### Prediction results (response to the `/predict` call):
+
+```yaml
+{
+  "status":  true,
+  "message": "0d3c5dffa4374c77a554ed38c9c50296",
+  "result": 1.0000178813934326
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `status` | Response status: `true` or `false`. |
+| `message` | Response message: an Id of the Neural Network used to make this prediction. |
+| `result` | Prediction: the sum of two numbers. |
+
+### System status (response to the `/status` call):
+
+```yaml
+{
+  "status":                   true,
+  "message":                  "OK",
+  "queue_requests_current":   0,
+  "queue_requests_max":       3,
+  "req_handling_time_avg_ms": 14.484,
+  "workers_count":            1,
+  "workers": [
+    {
+      "address":                  ["192.168.1.133"],
+      "nn_id":                    "0d3c5dffa4374c77a554ed38c9c50296",
+      "req_handling_time_avg_ms": 11.356,
+      "count_values_handled":     1,
+      "inference_time_avg_ms":    11.196
+    }
+  ]
+}
+```
+
 ## Supplementary files 
 
 Weights of the Neural Network can be uploaded to the service from the Gateway. 
