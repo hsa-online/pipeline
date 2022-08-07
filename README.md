@@ -60,7 +60,7 @@ Get the status of the service:
 curl -X GET http://127.0.0.1:54321/status
 ```
 
-Several shell scripts are provided to simplify the testing. See <a id='shell-scripts'>Shell scripts</a>.
+Several shell scripts are provided to simplify the testing. See <a name='shell-scripts'>Shell scripts</a>.
 
 ## System responses
 
