@@ -63,11 +63,26 @@ curl -X GET http://127.0.0.1:54321/status
 ## Supplementary files 
 
 Weights of the Neural Network can be uploaded to the service from the Gateway. 
-Four different sample weights are provided (actually one example contains incorrect data encoded to Base64).
+Four different sample weights are provided (actually one example contains incorrect data encoded to Base64):
 
 | File | Description |
 | --- | --- |
-| `000127a35b5f462b8ec68fb4d905ac36_eb191815.b64` | weights of the NN trained for 20 epochs with batch size 1 |
-| `0d3c5dffa4374c77a554ed38c9c50296_66e26224.b64` | weights of the NN trained for 20 epochs with batch size 2 | 
-| `dfd2cd54a1ec4a408285f547f6827ea2_098b6e80.b64` | weights of the NN trained for 20 epochs with batch size 5 |
-| `bad_tensors.b64` | bad data encoded to Base64 to check service's reaction. |
+| `000127a35b5f462b8ec68fb4d905ac36_eb191815.b64` | Weights of the NN trained for 20 epochs with batch size 1 |
+| `0d3c5dffa4374c77a554ed38c9c50296_66e26224.b64` | Weights of the NN trained for 20 epochs with batch size 2 | 
+| `dfd2cd54a1ec4a408285f547f6827ea2_098b6e80.b64` | Weights of the NN trained for 20 epochs with batch size 5 |
+| `bad_tensors.b64` | Bad data encoded to Base64 to check service's reaction. |
+
+Provided shell scripts allow to test the system from the command line using cURL utility:
+
+| File | Description |
+| --- | --- |
+| `predict1.sh` | Predict sum of two numbers: `0.1` and `0.2`. |
+| `predict2.sh` | Predict sum of two numbers: `0.446` and `0.554`. |
+| `predict_wrong_tensor.sh` | Test the reaction of the system to requesting the sum of three numbers. |
+| `set_weights1.sh` | Load sample wights `000127a35b5f462b8ec68fb4d905ac36`. |
+| `set_weights2.sh` | Load sample wights `0d3c5dffa4374c77a554ed38c9c50296`. |
+| `set_weights3.sh` | Load sample wights `dfd2cd54a1ec4a408285f547f6827ea2`. | 
+| `set_weights_bad_base64.sh` | Test the reaction of the system to loading the wights not encoded to Base64. |
+| `set_weights_bad_tensors.sh` | Test the reaction of the system to loading as weights an arbitrary data (encoded to Base64). |
+| `status.sh` | Get the status of the system. |
+
