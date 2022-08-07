@@ -1,5 +1,5 @@
 """
-NN inferencer
+NN inferencer: uses PyTorch, allows to load weights and to run the inference.
 
 """
 
@@ -70,6 +70,7 @@ class Inferencer(metaclass=Singleton):
                     # Compute model output
                     output_batch = self.__nn_model(inference_batch)
                 except RuntimeError:
+                    # Can be caused for example by passing a wrong input 
                     trace_str = traceback.format_exc()
                     trace_str = base64.standard_b64encode(
                         trace_str.encode()).decode('utf-8')

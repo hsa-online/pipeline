@@ -1,3 +1,8 @@
+"""
+Both the REST API responses encoder and service internal commands encoder.
+
+"""
+
 import json
 
 from typing import Any, List, Dict

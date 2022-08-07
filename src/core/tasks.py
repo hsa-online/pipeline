@@ -97,7 +97,7 @@ async def task_work_service(responder):
 
     while True:
         # TODO: Remove debug output
-        print(f'[service waiting...]')
+        print(f'[Service is waiting...]')
 
         cmd_bytes = await responder.arecv()
         cmd_str = cmd_bytes.decode('utf-8')

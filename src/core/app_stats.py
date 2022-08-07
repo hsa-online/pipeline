@@ -27,11 +27,17 @@ class ApplicationStatistics(metaclass=Singleton):
 
     @staticmethod
     def setup_for_gw():
+        """
+        Initializes statistics for Gateway node.
+        """
         stats = ApplicationStatistics()
         stats.add_stats_holder(ApplicationStatistics.REQ_HANDLING_TIME, SlidingWindowStats())
 
     @staticmethod
     def setup_for_work():
+        """
+        Initializes statistics for Worker node.
+        """
         stats = ApplicationStatistics()
         stats.add_stats_holder(ApplicationStatistics.NN_INFERENCE_TIME, SlidingWindowStats())
         stats.add_stats_holder(ApplicationStatistics.REQ_HANDLING_TIME, SlidingWindowStats())

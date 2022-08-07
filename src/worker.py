@@ -7,6 +7,11 @@ Demo of the Python-based NN pipeline compute node
 # More on command line arguments:
     python worker.py -h
 
+Command line arguments:
+
+--addr_service    specifies the address and port of Gateway's service listener.
+--addr_worker     specifies the address and port of Gateway's computation listener.
+-h                print this help message.
 """
 
 import argparse
@@ -41,12 +46,9 @@ async def bootstrap():
     ApplicationStatistics.setup_for_work()
 
     with pynng.Respondent0(dial=args.addr_service) as sock_responder, \
-            pynng.Rep0(dial=args.addr_worker, reconnect_time_min=1000, reconnect_time_max=5000) as sock_rep:
-        # TODO: Remove debug output
-        print('[Connecting...]')
-        await trio.sleep(0.5)
-        # TODO: Remove debug output
-        print('[Possibly Connected]')
+            pynng.Rep0(dial=args.addr_worker, 
+                reconnect_time_min=Defaults.WORK_RECONNECT_TIME_MIN_MS, 
+                reconnect_time_max=Defaults.WORK_RECONNECT_TIME_MAX_MS) as sock_rep:
         async with trio.open_nursery() as nursery:
             nursery.start_soon(task_work_predict, sock_rep)
             nursery.start_soon(task_work_service, sock_responder)

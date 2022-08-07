@@ -1,3 +1,8 @@
+"""
+System's defaults.
+
+"""
+
 class Defaults:
     ADDR_REST = '127.0.0.1:54321'
     ADDR_SERVICE = 'tcp://127.0.0.1:54000'
@@ -6,3 +11,5 @@ class Defaults:
     GW_SIZE_QUEUE_SERVICE = 2
     GW_SIZE_QUEUE_COMPUTE = 3
     
+    WORK_RECONNECT_TIME_MIN_MS = 1000
+    WORK_RECONNECT_TIME_MAX_MS = 5000

@@ -7,6 +7,12 @@ Demo of the Python-based NN pipeline gateway with the REST API
 # More on command line arguments:
     python gw.py -h
 
+Command line arguments:
+
+--addr_service    specifies the address and port of Gateway's service listener.
+--addr_worker     specifies the address and port of Gateway's computation listener.
+-h                print this help message.
+
 """
 
 import argparse
@@ -94,7 +100,8 @@ async def bootstrap():
                     chan_compute_send_cluster2api, chan_compute_receive_api2cluster, sock_req)
 
                 nursery.start_soon(task_gw_service, 
-                    chan_service_send_cluster2api, chan_service_receive_api2cluster, chan_compute_send_api2cluster, sock_surveyor)
+                    chan_service_send_cluster2api, chan_service_receive_api2cluster, 
+                    chan_compute_send_api2cluster, sock_surveyor)
 
                 nursery.start_soon(serve, APIGateway(
                     chan_service_send_api2cluster, chan_service_receive_cluster2api,

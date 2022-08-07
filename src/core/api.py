@@ -8,6 +8,7 @@ import json
 
 from datetime import datetime
 from starlette.applications import Starlette
+from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
 from starlette.datastructures import UploadFile
@@ -17,6 +18,10 @@ from core.app_stats import ApplicationStatistics
 from core.msg_helper import MessageHelper
 
 class APIGateway(Starlette):
+    """ 
+    REST API implementation
+    """
+
     def __init__(self, 
         chan_service_send_api2cluster, chan_service_receive_cluster2api,
         chan_compute_send_api2cluster, chan_compute_receive_cluster2api):
@@ -33,7 +38,7 @@ class APIGateway(Starlette):
         self.__chan_compute_send_api2cluster = chan_compute_send_api2cluster
         self.__chan_compute_receive_cluster2api = chan_compute_receive_cluster2api
 
-    async def __status(self, request):
+    async def __status(self, request: Request) -> JSONResponse:
         """
         /status handler
         """
@@ -47,7 +52,7 @@ class APIGateway(Starlette):
             # Return 200 OK
             return JSONResponse(json.loads(item), status_code=200)
 
-    async def __predict(self, request):
+    async def __predict(self, request: Request) -> JSONResponse:
         """
         /predict handler
         """
@@ -80,7 +85,7 @@ class APIGateway(Starlette):
             # Return 200 OK
             return JSONResponse(json.loads(item), status_code=200)
 
-    async def __set_weights(self, request):
+    async def __set_weights(self, request: Request) -> JSONResponse:
         """
         /set_weights handler
         """

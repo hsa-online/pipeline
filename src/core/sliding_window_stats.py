@@ -30,13 +30,24 @@ class SlidingWindowStats:
 
     @property
     def average(self) -> float:
+        """
+        Returns the average value of the current Sliding Window.
+
+        When necessary, computes the value on the fly. 
+        In case of computation has O(n) complexity 
+        (where n is the Sliding Window size), otherwise O(1)
+        """ 
         if len(self.__values) == 0:
             return 0.0
         if not self.__total_is_valid:
             self.__compute_total()
         return self.__total / len(self.__values)
 
-    def add_value(self, value: float) -> float:
+    def add_value(self, value: float):
+        """
+        Adds the value specified to the current Sliding Window.
+        """
+
         self.__count_values_handled += 1
 
         self.__ensure_place_available()

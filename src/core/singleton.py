@@ -1,5 +1,5 @@
 """
-An implementation of Singleton.
+An implementation of the Singleton pattern.
 
 """
 
