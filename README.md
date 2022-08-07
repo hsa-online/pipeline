@@ -83,7 +83,7 @@ More about these responses below:
 | Field | Description |
 | --- | --- |
 | `status` | Response status: `true` or `false`. |
-| `message` | Response message: an Id of the Neural Network used to make this prediction. |
+| `message` | Response message: an `id` of the Neural Network used to make this prediction. |
 | `result` | Prediction: the sum of two numbers. |
 
 ### System status (response to the `/status` call):
@@ -101,12 +101,27 @@ More about these responses below:
       "address":                  ["192.168.1.133"],
       "nn_id":                    "0d3c5dffa4374c77a554ed38c9c50296",
       "req_handling_time_avg_ms": 11.356,
-      "count_values_handled":     1,
+      "count_requests_handled":     1,
       "inference_time_avg_ms":    11.196
     }
   ]
 }
 ```
+
+| Field | Description |
+| --- | --- |
+| `status` | Response status: `true` or `false`. |
+| `message` | Response message. |
+| `queue_requests_current` | Number of unhandled requests in the requests queue. |
+| `queue_requests_max` | Maximum size of the requests queue. |
+| `req_handling_time_avg_ms` | Average request handling time in the system (in milliseconds). |
+| `workers_count` | Number of Workers in the system. |
+| `workers` | An array of workers. Each object from this array contains a data from single Worker. |
+| `workers[i].address` | IP address of this Worker. Value is returned as array as the host may have more than one network addresses. |
+| `workers[i].nn_id` | An `id` of the Neural Network loaded to this Worker. |
+| `workers[i].req_handling_time_avg_ms` | Average request handling time for this Worker (in milliseconds). |
+| `workers[i].count_requests_handled` | Count of requests handled by this Worker. |
+| `workers[i].inference_time_avg_ms` | Average inference time for this Worker (in milliseconds). |
 
 ## Supplementary files 
 

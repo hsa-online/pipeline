@@ -29,7 +29,7 @@ class MessageHelper:
         cmd_resp['address'] = addr
         cmd_resp['nn_id'] = nn_id
         cmd_resp['req_handling_time_avg_ms'] = req_handling_time_ms
-        cmd_resp['count_values_handled'] = count_values_handled
+        cmd_resp['count_requests_handled'] = count_values_handled
         cmd_resp['inference_time_avg_ms'] = inference_time_ms
         return json.dumps(cmd_resp)
 
