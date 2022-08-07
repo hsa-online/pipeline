@@ -70,7 +70,36 @@ The `message` contains a `string` value and describes the response.
 
 More about these responses below:
 
+### Weights loading results (response to the `/set_weights` call):
+
+Contains results of new weights loading to the system.
+
+If new weights were successfully loaded:
+
+```yaml
+{
+  "status":        true,
+  "message":       "OK",
+  "workers_count": 1,
+  "workers": [
+    {
+      "result": true
+    }
+  ]
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `status` | Response status: `true` for successful load. |
+| `message` | Response message. |
+| `workers_count` | Number of Workers which actually loaded the new weights. |
+| `workers` | An array of workers. Each object from this array contains a data from single Worker. |
+| `workers[i].result` | This Worker's weights loading result. |
+
 ### Prediction results (response to the `/predict` call):
+
+Contains prediction results.
 
 ```yaml
 {
@@ -86,7 +115,27 @@ More about these responses below:
 | `message` | Response message: an `id` of the Neural Network used to make this prediction. |
 | `result` | Prediction: the sum of two numbers. |
 
+
+When prediction is failed the `message` field will contain Base64 encoded stack trace describing what's happened.
+Please note that in the example below the `message` field is partially cut.
+
+```yaml
+{
+  "status":  false,
+  "message": "VHJhY2ViYW...hbmQgMngyMCkK",
+  "result":  0.0
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `status` | Response status: `false`. |
+| `message` | Response message: Base64 encoded stack trace of the system. |
+| `result` | Prediction: 0.0 for failed prediction. |
+
 ### System status (response to the `/status` call):
+
+Contains an overall status of the system and all its Workers.
 
 ```yaml
 {
@@ -117,7 +166,7 @@ More about these responses below:
 | `req_handling_time_avg_ms` | Average request handling time in the system (in milliseconds). |
 | `workers_count` | Number of Workers in the system. |
 | `workers` | An array of workers. Each object from this array contains a data from single Worker. |
-| `workers[i].address` | IP address of this Worker. Value is returned as array as the host may have more than one network addresses. |
+| `workers[i].address` | An IP address of this Worker. Value is returned as array as the host may have more than one network addresses. |
 | `workers[i].nn_id` | An `id` of the Neural Network loaded to this Worker. |
 | `workers[i].req_handling_time_avg_ms` | Average request handling time for this Worker (in milliseconds). |
 | `workers[i].count_requests_handled` | Count of requests handled by this Worker. |
